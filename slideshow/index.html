@@ -1,0 +1,118 @@
+<style>
+    .aa {
+        perspective: 600px;
+        perspective-origin: 50% 50%;
+        position: absolute;
+        left: 400px; top: 100px;
+        width: 150px; height: 100px;
+    }
+    .a1 {
+        z-index: 0;
+        background-color: red;
+        transform: perspective(900px) rotateY( 90deg )
+        translate3d(-300px, 0, -150px);
+    }
+    .a2 {
+        z-index: 1;
+        background-color: blue;
+        transform: perspective(900px) rotateY( 75deg )
+        translate3d(-250px, 0, -50px);
+    }
+    .a3 {
+        z-index: 2;
+        background-color: green;
+        transform: perspective(900px) rotateY( 0deg )
+        translate3d(0, 0, 400px);
+    }
+    .a4 {
+        z-index: 1;
+        background-color: orange;
+        transform: perspective(900px) rotateY( -75deg )
+        translate3d(250px, 0, -50px);
+    }
+    .a5 {
+        z-index: 0;
+        background-color: purple;
+        transform: perspective(900px) rotateY( -90deg )
+        translate3d(300px, 0, -150px);
+    }
+    .a {
+        position: absolute;
+        left: 400px; top: 100px;
+        width: 150px; height: 100px;
+        z-index: 0;
+        background-color: purple;
+        transform: perspective(900px);
+    }
+</style>
+
+<script>
+    const states = {
+//        index: [0,1,2,1,0],
+        rotateY: [90,75,0,-75,-90],
+        x: [-300,-250,0,250,300],
+        z: [-150, -50,400, -50, -150],
+    };
+
+    function setPosition(id,
+        rotY, x, z, zIndex
+    ) {
+        var div = document.getElementById(id);
+        var newStyle = "perspective(900px) "+
+            "rotateY(" + (rotY) + "deg) "+
+            "translate3d(" + x+"px,0,"+z+"px)";
+        div.style.transform = newStyle;
+        div.style.zIndex = zIndex;
+//        console.log(div,newStyle);
+    }
+
+    function setState(id,state) {
+        var lState = Math.floor(state);
+        var rState = Math.floor(state)+1;
+        var aprogress = state - lState;
+        var progress = 1-aprogress;
+//        console.log(states.x[lState],lState);
+  //      console.log(states.z[rState],rState);
+
+        setPosition(
+            id,
+            states.rotateY[lState]*progress+states.rotateY[rState]*aprogress,
+            states.x[lState]*progress+states.x[rState]*aprogress,
+            states.z[lState]*progress+states.z[rState]*aprogress,
+            Math.round((states.z[lState]*progress+states.z[rState]*aprogress)*10+1000)
+//            states.index[lState]*progress+states.index[rState]*aprogress
+        );
+    }
+
+</script>
+
+<html>
+    <body>
+    <div style="align: center">
+        <div id="a1" class="aa a1"></div>
+        <div id="a2" class="aa a2"></div>
+        <div id="a3" class="aa a3"></div>
+        <div id="a4" class="aa a4"></div>
+        <!--div id="a5" class="aa a5"></div-->
+    </div>
+    </body>
+    <script>
+        function loop() {
+            setState('a1',(Date.now()/1000) % 4);
+            setState('a2',(1+Date.now()/1000) % 4);
+            setState('a3',(2+Date.now()/1000) % 4);
+            setState('a4',(3+Date.now()/1000) % 4);
+//            setState('a5',(4+Date.now()/1000) % 4);
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+//        setState('a1', 2);
+
+//        setState('a1',0);
+//        setState('a2',1);
+  //      setState('a3',2);
+    //    setState('a4',3);
+      //  setState('a5',4);
+    </script>
+</html>

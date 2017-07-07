@@ -5,6 +5,7 @@
         position: absolute;
         left: 400px; top: 100px;
         width: 150px; height: 100px;
+        transition: transform .3s;
     }
     .a1 {
         z-index: 0;
@@ -103,10 +104,12 @@
             setState('a3',(2+Date.now()/1000) % 4);
             setState('a4',(3+Date.now()/1000) % 4);
 //            setState('a5',(4+Date.now()/1000) % 4);
-            requestAnimationFrame(loop);
+ //           requestAnimationFrame(loop);
         }
 
         loop();
+
+        setInterval(loop, 1000);
 //        setState('a1', 2);
 
 //        setState('a1',0);
